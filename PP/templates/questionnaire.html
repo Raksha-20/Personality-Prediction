@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire - Personality Prediction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Montserrat', Arial, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 15s infinite ease-in-out;
+        }
+        .bubble1 { width: 200px; height: 200px; left: 5vw; top: 5vh; background: #43cea2; animation-delay: 0s; }
+        .bubble2 { width: 150px; height: 150px; left: 75vw; top: 15vh; background: #185a9d; animation-delay: 3s; }
+        .bubble3 { width: 120px; height: 120px; left: 60vw; top: 70vh; background: #f7971e; animation-delay: 6s; }
+        .bubble4 { width: 100px; height: 100px; left: 10vw; top: 60vh; background: #e74c3c; animation-delay: 9s; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-60px) rotate(180deg); }
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideInDown 1s ease-out;
+        }
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+        .progress-container {
+            background: rgba(255,255,255,0.2);
+            border-radius: 25px;
+            padding: 5px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #43cea2, #185a9d);
+            height: 8px;
+            border-radius: 20px;
+            transition: width 0.3s ease;
+        }
+        .progress-text {
+            color: white;
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+        .questionnaire-form {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            animation: slideInUp 1s ease-out;
+        }
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .question-block {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 4px solid #43cea2;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .question-block:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .question-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #43cea2, #185a9d);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: 600;
+            margin-right: 15px;
+            font-size: 0.9rem;
+        }
+        .question-text {
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        .answer-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: white;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            resize: vertical;
+            min-height: 100px;
+        }
+        .answer-input:focus {
+            border-color: #43cea2;
+            box-shadow: 0 0 0 3px rgba(67, 206, 162, 0.1);
+            outline: none;
+        }
+        .answer-input::placeholder {
+            color: #adb5bd;
+            font-style: italic;
+        }
+        .submit-section {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #43cea2, #185a9d);
+            color: white;
+            box-shadow: 0 4px 15px rgba(67, 206, 162, 0.3);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d, #495057);
+            color: white;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        .btn:active {
+            transform: translateY(0);
+        }
+        .char-counter {
+            text-align: right;
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+        .char-counter.warning {
+            color: #f39c12;
+        }
+        .char-counter.danger {
+            color: #e74c3c;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #6c757d;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .back-link:hover {
+            color: #43cea2;
+        }
+        .tips-section {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .tips-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .tips-text {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-weight: 600;
+            text-align: center;
+            animation: slideInDown 0.5s ease-out;
+        }
+        .alert-error {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+        .alert-success {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            .header h1 {
+                font-size: 2rem;
+            }
+            .questionnaire-form {
+                padding: 20px;
+            }
+            .question-block {
+                padding: 20px;
+            }
+            .question-text {
+                font-size: 1rem;
+            }
+            .answer-input {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+            .btn {
+                padding: 12px 30px;
+                font-size: 1rem;
+                margin: 5px;
+                display: block;
+                width: 100%;
+            }
+            .bubble {
+                display: none;
+            }
+        }
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .questionnaire-form {
+                padding: 15px;
+            }
+            .question-block {
+                padding: 15px;
+            }
+            .question-number {
+                width: 25px;
+                height: 25px;
+                line-height: 25px;
+                font-size: 0.8rem;
+                margin-right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bubble bubble1"></div>
+    <div class="bubble bubble2"></div>
+    <div class="bubble bubble3"></div>
+    <div class="bubble bubble4"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>📝 Personality Questionnaire</h1>
+            <p>Answer these questions honestly to get your personality analysis</p>
+        </div>
+
+        <!-- Error Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+            <div class="progress-text" id="progressText">Question 1 of {{ questions|length }}</div>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="tips-section">
+            <div class="tips-title">💡 Tips for Better Results</div>
+            <div class="tips-text">Be honest and detailed in your responses. There are no right or wrong answers - just be yourself!</div>
+        </div>
+
+        <div class="questionnaire-form">
+            <form method="post" action="{{ url_for('submit_questionnaire') }}" id="questionnaireForm">
+                {% for q in questions %}
+                <div class="question-block">
+                    <div class="question-text">
+                        <span class="question-number">{{ loop.index }}</span>
+                        {{ q.text }}
+                    </div>
+                    <textarea 
+                        name="question_{{ q.id }}" 
+                        class="answer-input" 
+                        placeholder="Share your thoughts here... (minimum 50 characters)"
+                        required
+                        minlength="50"
+                        data-question="{{ loop.index }}"
+                    ></textarea>
+                    <div class="char-counter" id="counter_{{ q.id }}">0 characters</div>
+                </div>
+                {% endfor %}
+                
+                <div class="submit-section">
+                    <button type="submit" class="btn btn-primary">
+                        🚀 Submit Questionnaire
+                    </button>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                        ← Back to Dashboard
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Character counter and progress tracking
+        document.addEventListener('DOMContentLoaded', function() {
+            const textareas = document.querySelectorAll('.answer-input');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const totalQuestions = textareas.length;
+            
+            // Character counter for each textarea
+            textareas.forEach(textarea => {
+                const questionId = textarea.name.split('_')[1];
+                const counter = document.getElementById(`counter_${questionId}`);
+                
+                textarea.addEventListener('input', function() {
+                    const length = this.value.length;
+                    counter.textContent = `${length} characters`;
+                    
+                    // Color coding for character count
+                    counter.className = 'char-counter';
+                    if (length < 50) {
+                        counter.classList.add('warning');
+                    } else if (length > 500) {
+                        counter.classList.add('danger');
+                    }
+                    
+                    updateProgress();
+                    checkAnswerVariety();
+                });
+            });
+            
+            // Update progress bar
+            function updateProgress() {
+                let answeredQuestions = 0;
+                textareas.forEach(textarea => {
+                    if (textarea.value.trim().length >= 50) {
+                        answeredQuestions++;
+                    }
+                });
+                
+                const progress = (answeredQuestions / totalQuestions) * 100;
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `Question ${answeredQuestions} of ${totalQuestions}`;
+            }
+            
+            // Check for answer variety and provide real-time feedback
+            function checkAnswerVariety() {
+                const answers = Array.from(textareas).map(textarea => textarea.value.trim().toLowerCase());
+                const validAnswers = answers.filter(answer => answer.length >= 50);
+                
+                // Only check if we have at least 3 valid answers
+                if (validAnswers.length >= 3) {
+                    const uniqueAnswers = [...new Set(validAnswers)];
+                    const varietyRatio = uniqueAnswers.length / validAnswers.length;
+                    
+                    // Show warning if answers are too similar
+                    if (varietyRatio < 0.4) {
+                        showVarietyWarning('⚠️ Your answers are becoming too similar. Please provide more varied responses to get accurate personality insights.');
+                    } else if (varietyRatio < 0.6) {
+                        showVarietyWarning('💡 Try to provide more diverse answers for better personality analysis.');
+                    } else {
+                        hideVarietyWarning();
+                    }
+                } else {
+                    hideVarietyWarning();
+                }
+            }
+            
+            // Show variety warning
+            function showVarietyWarning(message) {
+                let warningDiv = document.getElementById('varietyWarning');
+                if (!warningDiv) {
+                    warningDiv = document.createElement('div');
+                    warningDiv.id = 'varietyWarning';
+                    warningDiv.style.cssText = `
+                        background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+                        color: white;
+                        padding: 15px 20px;
+                        border-radius: 10px;
+                        margin: 20px 0;
+                        text-align: center;
+                        font-weight: 600;
+                        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+                        animation: slideInDown 0.5s ease-out;
+                    `;
+                    document.querySelector('.questionnaire-container').insertBefore(warningDiv, document.querySelector('.questionnaire-container').firstChild);
+                }
+                warningDiv.textContent = message;
+            }
+            
+            // Hide variety warning
+            function hideVarietyWarning() {
+                const warningDiv = document.getElementById('varietyWarning');
+                if (warningDiv) {
+                    warningDiv.remove();
+                }
+            }
+            
+            // Form validation
+            document.getElementById('questionnaireForm').addEventListener('submit', function(e) {
+                let allValid = true;
+                let errorMessage = '';
+                
+                // Check minimum length for each answer
+                textareas.forEach(textarea => {
+                    if (textarea.value.trim().length < 50) {
+                        allValid = false;
+                        textarea.style.borderColor = '#e74c3c';
+                        textarea.focus();
+                    } else {
+                        textarea.style.borderColor = '#e9ecef';
+                    }
+                });
+                
+                // Check for identical answers
+                if (allValid) {
+                    const answers = Array.from(textareas).map(textarea => textarea.value.trim().toLowerCase());
+                    const uniqueAnswers = [...new Set(answers)];
+                    
+                    // If more than 70% of answers are identical, flag as suspicious
+                    if (uniqueAnswers.length <= Math.ceil(answers.length * 0.3)) {
+                        allValid = false;
+                        errorMessage = 'Please provide more varied and thoughtful answers. Your responses appear too similar across different questions.';
+                        
+                        // Highlight all textareas
+                        textareas.forEach(textarea => {
+                            textarea.style.borderColor = '#e74c3c';
+                            textarea.style.backgroundColor = '#ffeaea';
+                        });
+                    }
+                    
+                    // Check for very short identical answers (like "yes", "no", "ok")
+                    const shortAnswers = answers.filter(answer => answer.length <= 10);
+                    if (shortAnswers.length >= answers.length * 0.8) {
+                        allValid = false;
+                        errorMessage = 'Please provide more detailed and thoughtful answers. Short responses like "yes" or "no" don\'t give enough insight into your personality.';
+                        
+                        textareas.forEach(textarea => {
+                            textarea.style.borderColor = '#e74c3c';
+                            textarea.style.backgroundColor = '#ffeaea';
+                        });
+                    }
+                }
+                
+                if (!allValid) {
+                    e.preventDefault();
+                    if (errorMessage) {
+                        alert(errorMessage);
+                    } else {
+                        alert('Please provide at least 50 characters for each question.');
+                    }
+                }
+            });
+            
+            // Auto-resize textareas
+            textareas.forEach(textarea => {
+                textarea.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = Math.max(100, this.scrollHeight) + 'px';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

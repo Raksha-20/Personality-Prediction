@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Personality Prediction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Montserrat', Arial, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 15s infinite ease-in-out;
+        }
+        .bubble1 { width: 200px; height: 200px; left: 5vw; top: 5vh; background: #43cea2; animation-delay: 0s; }
+        .bubble2 { width: 150px; height: 150px; left: 75vw; top: 15vh; background: #185a9d; animation-delay: 3s; }
+        .bubble3 { width: 120px; height: 120px; left: 60vw; top: 70vh; background: #f7971e; animation-delay: 6s; }
+        .bubble4 { width: 100px; height: 100px; left: 10vw; top: 60vh; background: #e74c3c; animation-delay: 9s; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-60px) rotate(180deg); }
+        }
+        .login-container {
+            background: rgba(255,255,255,0.95);
+            max-width: 400px;
+            width: 90%;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            animation: slideInUp 1s ease-out;
+        }
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .login-header {
+            margin-bottom: 30px;
+        }
+        .login-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px auto;
+            background: linear-gradient(135deg, #43cea2, #185a9d);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            box-shadow: 0 10px 20px rgba(67, 206, 162, 0.3);
+        }
+        h2 {
+            color: #2c3e50;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        .input-group {
+            position: relative;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #43cea2;
+            box-shadow: 0 0 0 3px rgba(67, 206, 162, 0.1);
+            outline: none;
+        }
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #adb5bd;
+            font-size: 1.1rem;
+        }
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #43cea2, #185a9d);
+            color: white;
+            box-shadow: 0 4px 15px rgba(67, 206, 162, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(67, 206, 162, 0.4);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        .alert {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #e74c3c;
+            font-size: 0.9rem;
+        }
+        .links {
+            margin-top: 20px;
+        }
+        .link {
+            color: #43cea2;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+        .link:hover {
+            color: #185a9d;
+        }
+        .divider {
+            margin: 20px 0;
+            text-align: center;
+            position: relative;
+            color: #adb5bd;
+            font-size: 0.9rem;
+        }
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e9ecef;
+        }
+        .divider span {
+            background: rgba(255,255,255,0.95);
+            padding: 0 15px;
+        }
+        .admin-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(67, 206, 162, 0.1);
+            color: #43cea2;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .admin-link:hover {
+            background: rgba(67, 206, 162, 0.2);
+            transform: translateY(-1px);
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
+            .login-container {
+                width: 100%;
+                padding: 30px 20px;
+            }
+            h2 {
+                font-size: 1.8rem;
+            }
+            .bubble {
+                display: none;
+            }
+        }
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 25px 15px;
+            }
+            h2 {
+                font-size: 1.6rem;
+            }
+            .login-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bubble bubble1"></div>
+    <div class="bubble bubble2"></div>
+    <div class="bubble bubble3"></div>
+    <div class="bubble bubble4"></div>
+    
+    <div class="login-container">
+        <div class="login-header">
+            <div class="login-icon">👤</div>
+            <h2>Welcome Back</h2>
+            <p class="subtitle">Sign in to your account</p>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="alert">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div class="input-group">
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                    <span class="input-icon">👤</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-group">
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <span class="input-icon">🔒</span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                🚀 Sign In
+            </button>
+        </form>
+
+        <div class="links">
+            <div class="divider">
+                <span>New here?</span>
+            </div>
+            <a href="{{ url_for('register') }}" class="link">Create an account</a>
+        </div>
+
+        <a href="{{ url_for('admin_login') }}" class="admin-link">
+            🔧 Admin Login
+        </a>
+    </div>
+</body>
+</html>
